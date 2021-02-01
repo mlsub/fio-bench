@@ -36,7 +36,7 @@ function _error() {
 # MAIN FUNCTIONS
 ################################################################################
 function _iotest() {
-    python2 <(wget -qO- https://github.com/amefs/fio-bench/raw/master/fio-bench_zh-cn.py -o /dev/null) ${EXTRACMD}
+    python3 <(wget -qO- https://github.com/amefs/fio-bench/raw/master/fio-bench_zh-cn.py -o /dev/null) ${EXTRACMD}
 }
 
 function _getDistName()
@@ -82,19 +82,18 @@ function _getDistName()
 function _CentOS_Dependent()
 {
     _info "安装 yum 依赖包..."
-    for packages in epel-release wget fio python python2;
+    for packages in epel-release wget fio python3;
     do yum -y install $packages > /dev/null 2>&1; done
     _success "yum 依赖包安装完成"
-    if ! $(which pip2 > /dev/null 2>&1); then
-        _info "安装 python-pip..."
+    if ! $(which pip3 > /dev/null 2>&1); then
+        _info "安装 python3-pip..."
         cd /tmp || exit 1
-        wget -q -O get-pip.py https://bootstrap.pypa.io/get-pip.py
-        python2 get-pip.py --force-reinstall > /dev/null 2>&1
+        wget -q -O- https://bootstrap.pypa.io/get-pip.py | python3 - --force-reinstall > /dev/null 2>&1
     else
-        _success "python-pip 已安装"
+        _success "python3-pip 已安装"
     fi
     _info "安装 pip 依赖包..."
-    pip install prettytable > /dev/null 2>&1
+    python3 -m pip install prettytable > /dev/null 2>&1
     _success "pip 依赖包安装完成"
 }
 
@@ -107,31 +106,30 @@ function _Deb_Dependent()
     export DEBIAN_FRONTEND=noninteractive
     for packages in wget fio;
     do apt-get install -yqq $packages > /dev/null 2>&1; done
-    if [[ "$(dpkg -s python 2> /dev/null | grep -cow '^Status: install ok installed$')" -eq '1' ]];then
-        _success "python 已安装"
+    if [[ "$(dpkg -s python3 2> /dev/null | grep -cow '^Status: install ok installed$')" -eq '1' ]];then
+        _success "python3 已安装"
     else
-        _info "安装 python..."
-        apt-get install -yqq python > /dev/null 2>&1
-        _success "python 已安装"
+        _info "安装 python3..."
+        apt-get install -yqq python3 > /dev/null 2>&1
+        _success "python3 已安装"
     fi
-    if ! $(which pip2 > /dev/null 2>&1); then
-        _info "安装 python-pip..."
+    if ! $(which pip3 > /dev/null 2>&1); then
+        _info "安装 python3-pip..."
         cd /tmp || exit 1
-        wget -q -O get-pip.py https://bootstrap.pypa.io/get-pip.py
-        python2 get-pip.py --force-reinstall > /dev/null 2>&1
-	_success "python-pip 已安装"
+        wget -q -O- https://bootstrap.pypa.io/get-pip.py | python3 - --force-reinstall >/dev/null 2>&1
+	_success "python3-pip 已安装"
     else
-        _success "python-pip 已安装"
+        _success "python3-pip 已安装"
     fi
-    _info "pip installing dependent packages..."
-    python2 -m pip install prettytable > /dev/null 2>&1
-    _success "pip packages installation finished"
+    _info "pip3 正在安装依赖..."
+    python3 -m pip install prettytable > /dev/null 2>&1
+    _success "pip3 依赖包已安装"
 }
 
 function _checkdep() {
     _getDistName
 	_info "检查依赖包"
-    if ( [ ! -f /usr/bin/fio ] || ! $(which pip2 > /dev/null 2>&1) || ! $(pip freeze --disable-pip-version-check | grep -q 'prettytable' > /dev/null 2>&1)); then
+    if ( [ ! -f /usr/bin/fio ] || ! $(which pip3 > /dev/null 2>&1) || ! $(python3 -m pip freeze --disable-pip-version-check | grep -q 'prettytable' > /dev/null 2>&1)); then
         _info "安装依赖包..."
         if [ "$PM" = "yum" ]; then
             _CentOS_Dependent

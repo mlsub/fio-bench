@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 
 import os
@@ -118,7 +118,7 @@ class FioTest(object):
         if errors:
             errors.close()
 
-        return str(result_str)
+        return result_str.decode('utf8')
 
     def explain(self, result):
 
