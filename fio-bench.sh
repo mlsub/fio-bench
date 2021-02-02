@@ -110,7 +110,7 @@ function _Deb_Dependent()
         _success "python3 installed"
     else
         _info "installing python3"
-        apt-get install -yqq python3 > /dev/null 2>&1
+        apt-get install -yqq python3 python3-distutils > /dev/null 2>&1
         _success "python3 installed"
     fi
     if ! $(which pip3 > /dev/null 2>&1); then
