@@ -82,13 +82,12 @@ function _getDistName()
 function _CentOS_Dependent()
 {
     _info "yum installing dependent packages..."
-    for packages in epel-release wget fio python python2;
+    for packages in epel-release wget fio python3;
     do yum -y install $packages > /dev/null 2>&1; done
     _success "yum packages installation finished"
     if ! $(which pip3 > /dev/null 2>&1); then
         _info "安装 python3-pip..."
-        cd /tmp || exit 1
-        wget -q -O- https://bootstrap.pypa.io/get-pip.py | python3 - --force-reinstall > /dev/null 2>&1
+        yum -y install python3-pip > /dev/null 2>&1
     else
         _success "python3-pip 已安装"
     fi
@@ -110,13 +109,12 @@ function _Deb_Dependent()
         _success "python3 installed"
     else
         _info "installing python3"
-        apt-get install -yqq python3 python3-distutils > /dev/null 2>&1
+        apt-get install -yqq python3 > /dev/null 2>&1
         _success "python3 installed"
     fi
     if ! $(which pip3 > /dev/null 2>&1); then
         _info "installing python3-pip"
-        cd /tmp || exit 1
-        wget -q -O- https://bootstrap.pypa.io/get-pip.py | python3 - --force-reinstall >/dev/null 2>&1
+        apt-get install -yqq python3-pip > /dev/null 2>&1
 	_success "python3-pip installed"
     else
         _success "python3-pip installed"

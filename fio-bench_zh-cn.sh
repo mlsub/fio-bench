@@ -87,8 +87,7 @@ function _CentOS_Dependent()
     _success "yum 依赖包安装完成"
     if ! $(which pip3 > /dev/null 2>&1); then
         _info "安装 python3-pip..."
-        cd /tmp || exit 1
-        wget -q -O- https://bootstrap.pypa.io/get-pip.py | python3 - --force-reinstall > /dev/null 2>&1
+        yum -y install python3-pip > /dev/null 2>&1
     else
         _success "python3-pip 已安装"
     fi
@@ -115,9 +114,8 @@ function _Deb_Dependent()
     fi
     if ! $(which pip3 > /dev/null 2>&1); then
         _info "安装 python3-pip..."
-        cd /tmp || exit 1
-        wget -q -O- https://bootstrap.pypa.io/get-pip.py | python3 - --force-reinstall >/dev/null 2>&1
-	_success "python3-pip 已安装"
+        apt-get install -yqq python3-pip > /dev/null 2>&1
+	    _success "python3-pip 已安装"
     else
         _success "python3-pip 已安装"
     fi

@@ -54,18 +54,17 @@ def printResult():
 def outputResult(filename=None):
     if os.path.exists(filename):
         os.remove(filename)
-    fo = open(filename, "w+")
-    fo.write((u"测试结果:\n").encode('utf-8'))
-    table = PrettyTable(["Test Item", u"读取 IOPS", u"读取速度", u"写入 IOPS", u"写入速度"])
-    for k, v in rwResult.items():
-        list = [k, v["read_iops"], v["read_bw"], v["write_iops"], v["write_bw"]]
-        table.add_row(list)
-    table.align = "r"
-    table.align["Test Item"] = "l"
-    fo.write(table.get_string(sortby="Test Item", reversesort=True).encode('utf-8'))
-    fo.write("\n")
-    fo.close()
-    print(G + "\n保存在 {}" + N).format(filename)
+    with open(filename, 'w+', encoding='utf-8') as fo:
+      fo.write(u"测试结果:\n")
+      table = PrettyTable(["Test Item", u"读取 IOPS", u"读取速度", u"写入 IOPS", u"写入速度"])
+      for k, v in rwResult.items():
+          list = [k, v["read_iops"], v["read_bw"], v["write_iops"], v["write_bw"]]
+          table.add_row(list)
+      table.align = "r"
+      table.align["Test Item"] = "l"
+      fo.write(table.get_string(sortby="Test Item", reversesort=True))
+      fo.write("\n")
+    print((G + "\n保存在 {}" + N).format(filename))
 
 
 class FioTest(object):

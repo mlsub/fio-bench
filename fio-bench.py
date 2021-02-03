@@ -58,22 +58,21 @@ def printResult():
 def outputResult(filename=None):
     if os.path.exists(filename):
         os.remove(filename)
-    fo = open(filename, "w+")
-    fo.write("Test Results:\n")
-    table = PrettyTable(
-        ["Test Item", "Read IOPS", "Read Speed", "Write IOPS", "Write Speed"])
-    for k, v in rwResult.items():
-        list = [k, v["read_iops"], v["read_bw"], v["write_iops"], v["write_bw"]]
-        table.add_row(list)
-    table.align["Test Item"] = "l"
-    table.align["Write IOPS"] = "r"
-    table.align["Write Speed"] = "r"
-    table.align["Read IOPS"] = "r"
-    table.align["Read Speed"] = "r"
-    fo.write(table.get_string(sortby="Test Item", reversesort=True))
-    fo.write("\n")
-    fo.close()
-    print(G + "\nThe test results saved in: {}" + N).format(filename)
+    with open(filename, 'w+', encoding='utf-8') as fo:
+      fo.write("Test Results:\n")
+      table = PrettyTable(
+          ["Test Item", "Read IOPS", "Read Speed", "Write IOPS", "Write Speed"])
+      for k, v in rwResult.items():
+          list = [k, v["read_iops"], v["read_bw"], v["write_iops"], v["write_bw"]]
+          table.add_row(list)
+      table.align["Test Item"] = "l"
+      table.align["Write IOPS"] = "r"
+      table.align["Write Speed"] = "r"
+      table.align["Read IOPS"] = "r"
+      table.align["Read Speed"] = "r"
+      fo.write(table.get_string(sortby="Test Item", reversesort=True))
+      fo.write("\n")
+    print((G + "\nThe test results saved in: {}" + N).format(filename))
 
 
 class FioTest(object):
