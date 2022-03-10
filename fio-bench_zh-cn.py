@@ -235,7 +235,7 @@ if __name__ == '__main__':
         test3 = True
         test4 = True
     else:
-        if not all(elem in range(1, 4) for elem in args.test_num):
+        if not all(elem in range(1, 5) for elem in args.test_num):
             raise ValueError('无效测试选项')
         else:
             if 1 in args.test_num: test1 = True
