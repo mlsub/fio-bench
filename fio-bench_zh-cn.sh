@@ -36,7 +36,7 @@ function _error() {
 # MAIN FUNCTIONS
 ################################################################################
 function _iotest() {
-    python3 <(wget -qO- https://cdn.jsdelivr.net/gh/mlsub/fio-bench/fio-bench_zh-cn.py -o /dev/null) ${EXTRACMD}
+    python3 <(wget -qO- https://cdn.jsdelivr.net/gh/mlsub/fio-bench@latest/fio-bench_zh-cn.py -o /dev/null) ${EXTRACMD}
 }
 
 function _getDistName()
